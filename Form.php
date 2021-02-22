@@ -33,66 +33,95 @@
 			 else{
 				 $name=$_POST["name"];
 			 }
-			 if(empty($_POST["uname"])){
+			 if(empty($_POST["user name"])){
 				 $err_uname="Username Required";
 			 }
-			 elseif(strlen($_POST["uname"])<6){
+			 elseif(isset($_POST[""])){
+		         echo htmlspecialchars($_POST["user name"]);
+		     }
+			 elseif(strlen($_POST["user name"])<6){
 				 $err_uname="Username Must Be 6 characters Long";
 			 }
-			 elseif(strpos($_POST["uname"],"")){
+			 elseif(strpos($_POST["user name"],"")){
 				 $err_uname="Username Should Not Contain White Space";
 			 }
-			 elseif(isset($_POST[""])){
-		         echo htmlspecialchars($_POST["username"]);
-		     }
 			 else{
-				 $uname=$_POST["uname"];
+				 $uname=$_POST["user name"];
 			 }
 			 if(empty($_POST["pass"])){
 				 $err_pass="Password Required";
 			 }
+			 elseif(isset($_POST[""])){
+		         echo htmlspecialchars($_POST["pass"]);
+		     }
 			 elseif(strlen($_POST["pass"])<8){
 				 $err_pass="Password Must Be 8 Charachter Long";
 			 }
-			 elseif(isset($_POST[""])){
-		         echo htmlspecialchars($_POST["pass"]);
-				 echo ctype_upper("");
-				 echo ctype_lower("");
-				 echo number_format("");
-
+			 elseif(!strpos($_POST["pass"],"#")){
+			     $err_pass="[Password should contain special character]";
+		     }
+		     elseif(!is_numeric($_POST["pass"])){
+			     $err_pass="[Password should contain Numeric values]";
+		     }
+		     elseif(!ctype_upper($_POST["pass"])){
+			     $err_pass="[Password should contain UpperCase values]";
+		     }
+		     elseif(!ctype_lower($_POST["pass"])){
+			     $err_pass="[Password should contain LowerCase values]";
+		     }
+		     elseif(strpos($_POST["pass"]," ")){
+			     $err_pass="[Password should not contain white space]";
 		     }
 			 else{
 				 $pass=$_POST["pass"];
 			 }
-			 if(empty($_POST["cpass"])){
+			 if(empty($_POST["confirm pass"])){
 				 $err_cpass="Confirm Your Password";
 			 }
 			 else{
-				 $cpass=$_POST["cpass"];
+				 $cpass=$_POST["confirm pass"];
 			 }
 			  if (empty($_POST["email"])) {
                  $err_email = "Email is required";
-             } 
-			 else {
-                 $email =$err_email($_POST["email"]);
              }
-			 if(empty($_POST["phone"])){
+             elseif(!strpos($_POST["email"],"@.")){
+			     $err_email="[Email must contain @ and at least one dot after @]";
+		     }			 
+			 else {
+                 $email =$_POST["email"];
+             }
+			 if(empty($_POST["phone number"])){
 				 $err_phone="Insert Your Phone Number";
 			 }
+			 elseif(!is_numeric($_POST["phone number"])){
+			     $err_phone="[Phone number should contain Numeric values only]";
+		     }
 			 else{
-				 $phone=$_POST["phone"];
+				 $phone=$_POST["phone number"];
 			 }
-			  if(empty($_address["address"])){
+			 if(empty($_address["address"])){
 				 $err_address="Select Your Address";
 			 }
 			 else{
 				 $address=$_POST["address"];
 			 }
-			  if(empty($_POST["profession"])){
-				 $err_profession="Confirm Your Profession";
+			 if(empty($_POST["birth date"])){
+				 $err_bdate="Birth Date Required";
 			 }
 			 else{
-				 $profession=$_POST["profession"];
+				 $bdate=$_POST["birth date"];
+			 }
+			 if(empty($_POST["gender"])){
+				 $err_gender="Select your gender";
+			 }
+			 else{
+				 $gender=$_POST["gender"];
+			 }
+			 if(empty($_POST["where did you hear about us?"])){
+				 $err_wdyhau="Select where did you hear about us?";
+			 }
+			 else{
+				 $wdyhau=$_POST["where did you hear about us?"];
 			 }
 			 if(empty($_POST["bio"])){
 				 $err_bio="Bio Required";
@@ -137,15 +166,13 @@
 					</tr>
 					<tr>
 					    <td><span>Phone</span></td>
-						<td>:<input type="text" value="<?php echo $phone;?>" name="phone">
-						<span><?php echo $err_phone;?></span></td>
+						<td>:<input type="text" name="code" placeholder="Code" size="4">-<input type="text" name="number" placeholder="Number" size="10"></td>
 					</tr>
 					<tr>
 					    <td><span>Address</span></td>
-						<td>:<input type="text" name="sa" placeholder="Street Address" size="12"<br>
-					         <input type="text" name="city" placeholder="City" size="6">-<input type="text" name="state" placeholder="State" size="6"><br>
-							 <input type="text" name="postal/zipcode" placeholder="Postal/Zip Code" size="12">
-						</td> 
+						<td>:<input type="text" name="sa" placeholder="Street Address" size="20"><br>
+					    <input type="text" name="city" placeholder="City" size="7">-<input type="text" name="state" placeholder="State" size="7"><br>
+					    <input type="text" name="postal/zipcode" placeholder="Postal/Zip Code" size="20"></td>
 					</tr>
 					<tr>
 					    <td><span>Birth Date</span></td>
@@ -156,21 +183,25 @@
 								 echo "<option>$i</option>";
 							 }
 						?>
-						</td>
-						<td><select name="month">
-						<option disabled selected>Month</option>
-						<?php
-						    $month=array("January","February","March","April","May","June","July","August","September","October","November","December");
-							echo "$month[]";
-						?>
-						</td>
-						<td>:<select name="year">
+					    </select>
+						<select name="month">
+					    <option disabled selected>Month</option>
+					    <?php
+						$month= array("January","February","March","April","May","June","July","August","September","October","November","December");
+						for($j=0;$j<count($month);$j++)
+						{
+							echo "<option>$month[$j]</option>";
+						}
+					    ?>
+				        </select>
+						<select name="year">
 						<option disabled selected>Year</option>
 						<?php
-						     for($i=1985;$i<=2002;$i++){
-								 echo "<option>$i</option>";
+						     for($k=1985;$k<=2002;$k++){
+								 echo "<option>$k</option>";
 							 }
 						?>
+						</select>
 						</td>
 					</tr>
 					<tr>
@@ -186,7 +217,6 @@
 							     <option disabled selected>Chose One</option>
 						         <option>A Friend or Colleague</option>
 								 <option>Google</option>
-								 <option>Blog Post</option>
 								 <option>Blog Post</option>
 								 <option>News Article</option>
 							</select>
